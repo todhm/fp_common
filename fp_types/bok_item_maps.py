@@ -1,0 +1,6 @@
+from .bok_stats_code import SMALL_CAR_PRICE
+
+PRICE_BY_PRODUCT = '31211101AA'
+BOK_ITEM_MAP = {
+    SMALL_CAR_PRICE: PRICE_BY_PRODUCT
+}

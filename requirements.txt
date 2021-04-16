@@ -1,1 +1,2 @@
 requests
+marshmallow-dataclass==8.3.2
