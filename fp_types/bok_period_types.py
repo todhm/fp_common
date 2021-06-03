@@ -1,0 +1,2 @@
+MONTH = "MM"
+YEAR = "YY"
