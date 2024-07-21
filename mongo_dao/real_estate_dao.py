@@ -9,4 +9,3 @@ class RealEstateDao(BaseDao):
         self.db = db
         self.col = self.db[col]
 
-    
