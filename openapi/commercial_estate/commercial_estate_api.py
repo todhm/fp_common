@@ -1,6 +1,7 @@
 import asyncio
 from typing import Dict, Any, List
 
+import ssl
 import aiohttp
 import xmltodict
 
@@ -10,7 +11,7 @@ from fp_common.fp_types.commercial_real_estate import CommercialAPISalesResponse
 async def fetch_page(session: aiohttp.ClientSession, url: str, params: Dict[str, str], page_no: int) -> CommercialAPISalesResponse:
     params['pageNo'] = str(page_no)
     async with session.get(url, params=params) as response:
-        response_text = await response.text
+        response_text = await response.text()
         return xmltodict.parse(response_text)
 
 
@@ -20,7 +21,9 @@ async def fetch_all_ymd_data(
     deal_ymd: str,  # 201512
 ) -> List[Item]:
     url = 'https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade'
-    async with aiohttp.ClientSession() as session:
+    ssl_context = ssl.create_default_context()
+    ssl_context.set_ciphers("DEFAULT@SECLEVEL=1")
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:
         # First, fetch the first page to get the total count
         params = {
             'LAWD_CD': lawd_cd,
