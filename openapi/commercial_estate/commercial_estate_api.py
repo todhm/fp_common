@@ -4,10 +4,12 @@ from typing import Dict, Any, List
 import ssl
 import aiohttp
 import xmltodict
+from fp_common.fp_utils.func_utils import retries
 
 from fp_common.fp_types.commercial_real_estate import CommercialAPISalesResponse, Item
 
 
+@retries(times=3)
 async def fetch_page(session: aiohttp.ClientSession, url: str, params: Dict[str, str], page_no: int) -> CommercialAPISalesResponse:
     params['pageNo'] = str(page_no)
     async with session.get(url, params=params) as response:
@@ -15,6 +17,7 @@ async def fetch_page(session: aiohttp.ClientSession, url: str, params: Dict[str,
         return xmltodict.parse(response_text)
 
 
+@retries(times=3)
 async def fetch_all_ymd_data(
     api_key: str,
     lawd_cd: str,   # 11110
