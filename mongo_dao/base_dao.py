@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Any
 from pymongo.database import Database
 
 
@@ -14,3 +14,6 @@ class BaseDao(object):
         }}
         self.col.delete_many(delete_query)
         self.col.insert_many(data_list)
+
+    def find_distincts(self, column: str) -> List[Any]:
+        return self.col.distinct(column)

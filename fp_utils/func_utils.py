@@ -15,6 +15,6 @@ def retries(times):
                     await asyncio.sleep(1.5)
                     pass
 
-            raise ValueError("Tries Exeeded " + error_message)
+            raise ValueError(f"Tries Exeeded  {args} {kwargs}" + error_message)
         return wrapper
     return func_wrapper

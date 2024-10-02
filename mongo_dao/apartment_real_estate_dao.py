@@ -3,8 +3,9 @@ from pymongo.database import Database
 from .base_dao import BaseDao
 
 
-class CommercialRealEstateDao(BaseDao):
+class ApartmentRealEstateDao(BaseDao):
 
-    def __init__(self, db: Database, col: str = 'commercial_real_estate'):
+    def __init__(self, db: Database, col: str = 'apartment_real_estate'):
         self.db = db
         self.col = self.db[col]
+

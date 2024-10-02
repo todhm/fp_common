@@ -26,6 +26,14 @@ class Item(TypedDict):
     floor: Any  # Optional field
 
 
+class CommercialEstateDict(Item):
+    code: str
+    sido: str
+    sigungu: str
+    codeDate: str
+    ymd: str
+
+
 class ResponseBody(TypedDict):
     items: Dict[str, List[Item]]
     numOfRows: str

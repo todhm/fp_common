@@ -1,29 +1,29 @@
 import asyncio
-from typing import Dict, Any, List
+from typing import Dict, List
 
 import ssl
 import aiohttp
 import xmltodict
 from fp_common.fp_utils.func_utils import retries
 
-from fp_common.fp_types.commercial_real_estate import CommercialAPISalesResponse, Item
+from fp_common.fp_types.apartment_real_estate import RealEstateAPISalesResponse, Item
 
 
-@retries(times=3)
-async def fetch_page(session: aiohttp.ClientSession, url: str, params: Dict[str, str], page_no: int) -> CommercialAPISalesResponse:
+@retries(times=10)
+async def fetch_page(session: aiohttp.ClientSession, url: str, params: Dict[str, str], page_no: int) -> RealEstateAPISalesResponse:
     params['pageNo'] = str(page_no)
     async with session.get(url, params=params) as response:
         response_text = await response.text()
         return xmltodict.parse(response_text)
 
 
-@retries(times=3)
+@retries(times=10)
 async def fetch_all_ymd_data(
     api_key: str,
     lawd_cd: str,   # 11110
     deal_ymd: str,  # 201512
 ) -> List[Item]:
-    url = 'https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade'
+    url = 'https://apis.data.go.kr/1613000/RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev'
     ssl_context = ssl.create_default_context()
     ssl_context.set_ciphers("DEFAULT@SECLEVEL=1")
     async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:
@@ -31,8 +31,9 @@ async def fetch_all_ymd_data(
         params = {
             'LAWD_CD': lawd_cd,
             'DEAL_YMD': deal_ymd,
-            'serviceKey': api_key,  # Replace with your actual API key
-            'pageNo': '1'
+            'serviceKey': api_key,
+            'pageNo': '1',
+            'numOfRows': str(10000),
         }
         initial_response = await fetch_page(session, url, params, 1)
         total_count = int(initial_response['response']['body']['totalCount'])
