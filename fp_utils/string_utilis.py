@@ -1,5 +1,6 @@
 import random
 import string
+from datetime import datetime
 from typing import Optional
 
 
@@ -29,3 +30,20 @@ def string_to_float(
     if data:
         return float(data)
     return None
+
+
+def date_string_to_age(
+    age: str,
+    dformat: str = "%Y-%m-%d"
+) -> int:
+    return (
+        datetime.today().year -
+        datetime.strptime(age, dformat).year
+    ) - (
+        (
+            datetime.today().month, datetime.today().day
+        ) < (
+            datetime.strptime(age, dformat).month,
+            datetime.strptime(age, dformat).day
+        )
+    )
