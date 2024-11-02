@@ -16,6 +16,8 @@ class BaseDao(object):
         self.col.update_one(filter_query, update_operation, upsert=True)
 
     def upsert_data_list_by_primary_key(self, data_list: List[Dict], primary_key_list: List[str], primary_key: str):
+        if not data_list:
+            return
         delete_query = {primary_key: {
             "$in": primary_key_list
         }}
@@ -25,5 +27,11 @@ class BaseDao(object):
     def find_distincts(self, column: str) -> List[Any]:
         return self.col.distinct(column)
 
-    def find_all(self, search_key: Dict[str, Any]) -> List[Any]:
-        return self.col.find(search_key)
+    def find_all(self, search_key: Dict[str, Any], fetch_id: bool = True) -> List[Any]:
+        if fetch_id:
+            return self.col.find(search_key)
+        return self.col.find(search_key, {"_id": False})
+
+    def update_many(self, data: Dict[str, Any], filter_query: Dict[str, Any]):
+        update_operation = {"$set": data}
+        self.col.update_many(filter_query, update_operation, upsert=False)
