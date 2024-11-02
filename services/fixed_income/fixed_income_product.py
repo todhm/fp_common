@@ -42,7 +42,7 @@ class FixedIncomeProductService(object):
             "product_name": eight_percent_dict.get("title"),
             "link": link_map.get(eight_percent_dict.get("category")) + str(eight_percent_dict.get("id")),
             "principal_amount": eight_percent_dict['dealApplication']['finalAmountWon'],
-            "investemd_amount": eight_percent_dict['totalAmountInvestments'],
+            "invested_amount": eight_percent_dict['totalAmountInvestments'],
             "borrower_age": string_utilis.date_string_to_age(
                 eight_percent_dict['dealApplication']['userBorn'], '%Y-%m-%d'
             ),

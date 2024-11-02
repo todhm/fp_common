@@ -1,3 +1,4 @@
+import re
 import random
 import string
 from datetime import datetime
@@ -10,26 +11,24 @@ def random_string(
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def string_to_int(
-    data: Optional[str]
-) -> Optional[int]:
+def string_to_int(data: Optional[str]) -> Optional[int]:
     if not data:
         return None
-    data = data.replace(",", '').strip()
-    if data:
-        return int(data)
-    return None
+    # Use regex to find the first integer substring in the data
+    match = re.search(r'-?\d+', data.replace(",", "").strip())
+    # If an integer-like substring is found, convert it to an integer
+    return int(match.group()) if match else None
 
 
-def string_to_float(
-    data: Optional[str]
-) -> Optional[int]:
+def string_to_float(data: Optional[str]) -> Optional[float]:
     if not data:
         return None
-    data = data.replace(",", '').strip()
-    if data:
-        return float(data)
-    return None
+    # Remove commas and any surrounding whitespace
+    data = data.replace(",", "").strip()
+    # Use regex to find the first float-like substring (including potential decimal points)
+    match = re.search(r'-?\d+(\.\d+)?', data)
+    # If a float-like substring is found, convert it to a float
+    return float(match.group()) if match else None
 
 
 def date_string_to_age(

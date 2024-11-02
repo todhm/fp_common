@@ -46,7 +46,7 @@ class FixedIncomeProduct(BaseModel):
     product_name = StringField(verbose_name='상품명', required=True)
     link = StringField(verbose_name='상품 링크')
     principal_amount = FloatField(verbose_name='원금', required=True)
-    investemd_amount = FloatField(verbose_name='투자금액', required=False)
+    invested_amount = FloatField(verbose_name='투자금액', required=False)
     expected_invest_amount = FloatField(verbose_name='예상 투자금액', required=False)
     borrower_age = IntField(verbose_name='대출자 나이', required=False)
     annual_income = IntField(verbose_name='대출자 연소득', required=False)
