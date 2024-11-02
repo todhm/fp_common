@@ -54,7 +54,7 @@ class FixedIncomeProduct(BaseModel):
     mtv = FloatField(verbose_name='채권최고액 기반LTV', required=False)
     announced_ltv = FloatField(verbose_name='고시담보비율', required=False)
     interest_rate = FloatField(verbose_name='이자율', required=True)
-    expected_recovered_amount = FloatField(verbose_name='회수예상가액', required=True)
+    expected_recovered_amount = FloatField(verbose_name='회수예상가액', required=False)
     expected_real_interest_rate = FloatField(verbose_name='예상 실질 이자율')
     platform_fee_rate = FloatField(verbose_name='플랫폼이용료', required=True)
     term_value = IntField(verbose_name='만기 (월 단위)', required=True)

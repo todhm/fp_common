@@ -5,6 +5,7 @@ from mongoengine import Q
 from fp_common.repositories.fixed_income.fixed_income_product import FixedIncomeProductRepository
 from fp_common.services.fixed_income.expected_payment_services import ExpectedPaymentService
 from fp_common.fp_types.p2pproducts.eight_percent import EightPercentProductDict
+from fp_common.fp_types.p2pproducts.funding119 import Funding119ProductDict
 from fp_common.models.fixed_income.fixed_income import FixedIncomeProduct
 from fp_common.fp_types.enums.p2p.company import CompanyName
 from fp_common.fp_types.enums.p2p.product_type import ProductType
@@ -87,3 +88,16 @@ class FixedIncomeProductService(object):
         cls.upsert_expected_payments(fixed_income_id=fip.id)
         return fip
 
+    @classmethod
+    def upsert_funding_119_dict(
+        cls,
+        funding_dict: Funding119ProductDict,
+    ) -> FixedIncomeProduct:
+        upsert_condition = Q(link=funding_dict["link"])
+        funding_dict["expected_invest_amount"] = 5000000
+        _ = FixedIncomeProduct.objects(upsert_condition).update_one(
+            upsert=True, **funding_dict
+        )
+        fip = FixedIncomeProduct.objects.get(upsert_condition)
+        cls.upsert_expected_payments(fixed_income_id=fip.id)
+        return fip
