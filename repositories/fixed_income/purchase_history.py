@@ -1,7 +1,6 @@
 from fp_common.models.fixed_income.fixed_income import PurchaseHistory
 
 
-
 class PurchaseHistoryRepository(object):
 
     @classmethod
