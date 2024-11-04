@@ -76,6 +76,7 @@ class FixedIncomeProduct(BaseModel):
     open_date = DateTimeField(verbose_name='오픈예정일')
     start_date = DateTimeField(verbose_name='실행일')
     is_closed = BooleanField(verbose_name='상품 종료 여부', default=False)
+    ts = StringField(verbose_name='timestamp', default=dt.now().strftime('%Y%m%d%H%M%S'))
 
     def __unicode__(self):
         return f"{self.company} {self.product_name}"
