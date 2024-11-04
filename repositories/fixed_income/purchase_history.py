@@ -1,4 +1,5 @@
-from fixed_income.models import PurchaseHistory
+from fp_common.models.fixed_income.fixed_income import PurchaseHistory
+
 
 
 class PurchaseHistoryRepository(object):
