@@ -17,8 +17,8 @@ class FixedIncomeProductService(object):
 
     @classmethod
     def close_time_passed_products(cls, ts: str, company_name: CompanyName):
-        FixedIncomeProduct.objects.filter(ts__ne=ts).filter(company_name=company_name.value).update(is_closed=True)
-        FixedIncomeProduct.objects.filter(ts=ts).filter(company_name=company_name.value).update(is_closed=False)
+        FixedIncomeProduct.objects.filter(ts__ne=ts, company=company_name.value).update(is_closed=True)
+        FixedIncomeProduct.objects.filter(ts=ts, company=company_name.value).update(is_closed=False)
 
     @classmethod
     def upsert_expected_payments(
