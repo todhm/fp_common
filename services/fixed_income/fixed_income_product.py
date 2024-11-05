@@ -16,9 +16,9 @@ from fp_common.fp_utils import string_utilis, dict_utils
 class FixedIncomeProductService(object):
 
     @classmethod
-    def close_time_passed_products(cls, ts: str):
-        FixedIncomeProduct.objects.filter(ts__ne=ts).update(is_closed=True)
-        FixedIncomeProduct.objects.filter(ts=ts).update(is_closed=False)
+    def close_time_passed_products(cls, ts: str, company_name: CompanyName):
+        FixedIncomeProduct.objects.filter(ts__ne=ts).filter(company_name=company_name.value).update(is_closed=True)
+        FixedIncomeProduct.objects.filter(ts=ts).filter(company_name=company_name.value).update(is_closed=False)
 
     @classmethod
     def upsert_expected_payments(
@@ -33,6 +33,7 @@ class FixedIncomeProductService(object):
     @classmethod
     def upsert_from_eightpercent_dict(
         cls,
+        ts: str,
         eight_percent_dict: EightPercentProductDict,
     ) -> FixedIncomeProduct:
         category_map = {
@@ -44,6 +45,7 @@ class FixedIncomeProductService(object):
             "realEstate": "https://8percent.kr/deals/real-estate-special/",
         }
         converted_data = {
+            "ts": ts,
             "company": CompanyName.EIGHT_PERCENT.value,
             "product_type": category_map.get(eight_percent_dict.get("category")),
             "product_name": eight_percent_dict.get("title"),
@@ -111,9 +113,11 @@ class FixedIncomeProductService(object):
     @classmethod
     def upsert_funding_119_dict(
         cls,
+        ts: str,
         funding_dict: Funding119ProductDict,
     ) -> FixedIncomeProduct:
         upsert_condition = Q(link=funding_dict["link"])
+        funding_dict["ts"] = ts
         funding_dict["expected_invest_amount"] = 5000000
         funding_dict["company"] = CompanyName.FUNDING_119.value
         _ = FixedIncomeProduct.objects(upsert_condition).update_one(
@@ -126,6 +130,7 @@ class FixedIncomeProductService(object):
     @classmethod
     def upsert_from_credit_planet_dict(
         cls,
+        ts: str,
         credit_planet_dict: CreditPlanetProductDict,
     ) -> FixedIncomeProduct:
         category_map = {
@@ -206,6 +211,7 @@ class FixedIncomeProductService(object):
         )
         start_date = open_date if term_unit == "Days" else open_date + timedelta(days=2)
         converted_data = {
+            "ts": ts,
             "company": CompanyName.CREDIT_PLANET.value,
             "product_type": product_type,
             "product_name": credit_planet_dict['props']['pageProps']['pageDatas'][0]['property']['title'],
